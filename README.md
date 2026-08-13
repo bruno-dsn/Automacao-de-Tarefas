@@ -224,7 +224,7 @@ Mais detalhes estão em [decisões do projeto](docs/decisoes-do-projeto.md).
 ## Autor
 
 **Bruno Nunes**
-Cientista de Dados em formação pela Pós-Tech AI Scientist da FIAP.
+Cientista de Dados e IA.
 
 [GitHub](https://github.com/bruno-dsn) | [LinkedIn](https://www.linkedin.com/in/bruno-dsnunes/)
 
