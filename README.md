@@ -1,183 +1,233 @@
-# Automação de Cadastro de Produtos
+<div align="center">
 
-Projeto de automação desenvolvido em Python para automatizar o processo de cadastro de produtos em sistemas web.
+# Central de Qualidade e Automação de Catálogo
 
-## Sobre o Projeto
+### Validação de dados antes da execução automatizada
 
-Este projeto foi desenvolvido como parte do meu aprendizado em Python e automação de tarefas. O objetivo é automatizar o cadastro massivo de produtos em um sistema web, eliminando a necessidade de digitação manual repetitiva.
+[![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Playwright](https://img.shields.io/badge/Playwright-Automação-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)](https://playwright.dev/python/)
+[![Tests](https://img.shields.io/badge/Testes-Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Data](https://img.shields.io/badge/Dados-Sintéticos-24C7D9?style=for-the-badge)](docs/dados-e-metodologia.md)
+[![License](https://img.shields.io/badge/Licença-MIT-62D6A4?style=for-the-badge)](LICENSE)
 
-A automação utiliza a biblioteca PyAutoGUI para simular interações humanas com o navegador, como cliques e digitação, e a biblioteca Pandas para processar dados de arquivos CSV.
+Uma aplicação de portfólio que recebe um catálogo em CSV, aplica regras de qualidade, separa registros bloqueados e demonstra uma fila automatizada em ambiente local.
 
-## Funcionalidades
+</div>
 
-- Abertura automática do navegador Chrome
-- Login automático no sistema
-- Leitura de dados de produtos a partir de arquivo CSV
-- Cadastro automatizado de múltiplos produtos
-- Compatibilidade com macOS e Windows
+![Visão do projeto](assets/painel_automacao.png)
 
-## Tecnologias Utilizadas
+## O problema
 
-- Python 3.7 ou superior
-- PyAutoGUI - Automação de interface gráfica
-- Pandas - Manipulação de dados tabulares
-- Pyperclip - Operações de clipboard
+Automatizar o preenchimento de um formulário sem validar os dados apenas transfere erros para outro sistema. Este projeto trata a automação como a última etapa de um processo controlado:
 
-## Requisitos
+1. o catálogo é recebido e padronizado;
+2. regras de negócio identificam erros e avisos;
+3. somente linhas sem erro bloqueante entram na fila;
+4. a execução pode ser simulada ou realizada em um formulário local;
+5. cada item gera um log auditável.
 
-Antes de executar o projeto, certifique-se de ter instalado:
+O resultado é uma demonstração compreensível de **qualidade de dados, análise e automação segura**, sem acessar sistemas externos ou exigir credenciais reais.
 
-- Python 3.7 ou versão mais recente
-- Google Chrome
-- pip (gerenciador de pacotes do Python)
+## O que pode ser testado
 
-## Instalação
+| Área | O que entrega |
+|---|---|
+| Visão executiva | Volume, linhas liberadas, valor de estoque, margem e concentração por categoria |
+| Qualidade dos dados | Score, erros, avisos, linha de origem e orientação de correção |
+| Catálogo liberado | Filtros, análise de preço, custo, margem, estoque e exportação em CSV |
+| Simulador | Comparação hipotética entre preenchimento manual e automatizado |
+| Automação local | Cadastro com Playwright em uma página HTML incluída no projeto |
 
-Clone o repositório:
+## Resultados da amostra principal
+
+A base padrão é fictícia, reproduzível e gerada com semente fixa.
+
+| Indicador | Resultado |
+|---|---:|
+| Produtos analisados | 600 |
+| Categorias | 12 |
+| Marcas fictícias | 14 |
+| Linhas com erro bloqueante | 0 |
+| Linhas liberadas | 600 |
+| Linhas sinalizadas para revisão | 16 |
+| Valor de estoque a preço de venda | R$ 1.821.926,51 |
+| Margem bruta mediana | 43,9% |
+
+No cenário configurado com 100 itens, 45 segundos por cadastro manual e 3 segundos por cadastro automatizado, a economia calculada é de **70 minutos**, ou **93,3%**. Esse número é uma estimativa configurável, não uma medição de produção.
+
+## Arquitetura do fluxo
+
+```mermaid
+flowchart TD
+    A[CSV de produtos] --> B[Validação de estrutura e regras]
+    B --> C{Erro bloqueante?}
+    C -->|Sim| D[Relatório para correção]
+    C -->|Não| E[Fila liberada]
+    E --> F[Simulação no Streamlit]
+    E --> G[Playwright no formulário local]
+    F --> H[Log de execução]
+    G --> H
+```
+
+## Regras de qualidade
+
+| Regra | Severidade | Decisão |
+|---|---|---|
+| Campo obrigatório vazio | Erro | Bloqueia a linha |
+| Código fora do padrão `ABC-0001` | Erro | Bloqueia a linha |
+| Código duplicado | Erro | Bloqueia todas as ocorrências |
+| Preço, custo ou estoque inválido | Erro | Bloqueia a linha |
+| Custo superior ao preço | Erro | Bloqueia a linha |
+| Margem bruta inferior a 20% | Aviso | Libera, mas recomenda revisão |
+| Preço acima do padrão da categoria | Aviso | Libera, mas recomenda revisão |
+
+O preço fora do padrão é identificado pelo intervalo interquartil dentro de cada categoria. As regras e suas limitações estão detalhadas em [dados e metodologia](docs/dados-e-metodologia.md).
+
+## Tecnologias
+
+- **Python e Pandas:** geração, leitura, validação e transformação dos dados;
+- **Streamlit:** aplicação interativa e exportação dos resultados;
+- **Plotly:** visualizações e filtros no painel;
+- **Playwright:** preenchimento do formulário por seletores estáveis;
+- **Pytest:** testes de dados, validação, segurança e contrato do HTML;
+- **Matplotlib:** geração das imagens estáticas do repositório.
+
+## Como executar o painel
+
+### 1. Clone e entre na pasta
 
 ```bash
-git clone https://github.com/SEU_USUARIO/automacao-cadastro-produtos.git
-cd automacao-cadastro-produtos
+git clone https://github.com/bruno-dsn/Automacao-de-Tarefas.git
+cd Automacao-de-Tarefas
 ```
 
-Instale as dependências:
+### 2. Crie o ambiente com Python 3.14
 
 ```bash
-pip install -r requirements.txt
+python3.14 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-## Configuração
-
-### Obter Coordenadas da Tela
-
-As coordenadas dos campos do formulário variam conforme a resolução da tela. Para obter as coordenadas corretas:
-
-1. Execute o script auxiliar:
-```bash
-python pegar_posicao.py
-```
-
-2. Posicione o mouse sobre o campo desejado quando solicitado
-3. Anote as coordenadas X e Y exibidas
-
-### Atualizar Coordenadas no Código
-
-Abra o arquivo `codigo.py` e localize as seguintes linhas:
-
-```python
-CAMPO_EMAIL_X = 2532
-CAMPO_EMAIL_Y = 380
-CAMPO_PRODUTO_X = 2524
-CAMPO_PRODUTO_Y = 264
-```
-
-Substitua pelos valores obtidos no passo anterior.
-
-## Estrutura do Arquivo CSV
-
-O arquivo `produtos.csv` deve conter as seguintes colunas:
-
-- codigo: Código único do produto
-- marca: Marca do produto
-- tipo: Tipo ou categoria do produto
-- categoria: Número da categoria
-- preco_unitario: Preço de venda
-- custo: Custo de aquisição
-- obs: Observações (opcional)
-
-Exemplo:
-
-```csv
-codigo,marca,tipo,categoria,preco_unitario,custo,obs
-PROD001,Nike,Tenis,1,299.90,150.00,Tamanho 42
-PROD002,Adidas,Camisa,2,129.90,60.00,
-```
-
-## Como Usar
-
-1. Certifique-se de que o arquivo `produtos.csv` está na mesma pasta do script
-2. Feche outras janelas do Chrome que possam interferir
-3. Execute o script:
+As versões foram fixadas em releases com suporte ao Python 3.14. Se o `pip` ainda tentar compilar o Pillow em vez de baixar o arquivo pronto para macOS, execute:
 
 ```bash
-python codigo.py
+python -m pip install --upgrade pip
+python -m pip install --only-binary=:all: pillow==12.3.0
+python -m pip install -r requirements.txt
 ```
 
-4. Aguarde 10 segundos sem tocar no mouse ou teclado
-5. O script executará automaticamente todo o processo
+### 3. Abra a aplicação
 
-## Observações Importantes
-
-- Durante a execução, não utilize o mouse ou teclado
-- Para interromper emergencialmente, mova o mouse para o canto superior esquerdo da tela
-- O tempo total de execução depende da quantidade de produtos (aproximadamente 1 segundo por produto)
-- Certifique-se de que a janela do navegador está visível e não minimizada
-
-## Solução de Problemas
-
-### O Chrome não abre
-Verifique se o Google Chrome está instalado corretamente no sistema.
-
-### Coordenadas incorretas
-Execute novamente o script `pegar_posicao.py` e certifique-se de que a resolução da tela não foi alterada.
-
-### Campos não são preenchidos corretamente
-Aumente os valores de `time.sleep()` no código para dar mais tempo ao sistema processar cada ação.
-
-### Arquivo CSV não encontrado
-Certifique-se de que o arquivo `produtos.csv` está na mesma pasta que o script `codigo.py`.
-
-## Estrutura do Projeto
-
-```
-automacao-cadastro-produtos/
-├── codigo.py              # Script principal de automação
-├── pegar_posicao.py       # Utilitário para capturar coordenadas
-├── produtos.csv           # Dados dos produtos a serem cadastrados
-├── requirements.txt       # Dependências do projeto
-├── .gitignore            # Arquivos ignorados pelo Git
-└── README.md             # Este arquivo
+```bash
+python -m streamlit run app.py
 ```
 
-## Aprendizados
+O painel também aceita um CSV próprio. Use [data/catalogo_sintetico.csv](data/catalogo_sintetico.csv) como modelo de estrutura.
 
-Este projeto me permitiu aprender e praticar:
+## Como testar a automação local
 
-- Automação de interfaces gráficas com PyAutoGUI
-- Manipulação de arquivos CSV com Pandas
-- Detecção de sistema operacional em Python
-- Controle de fluxo e loops
-- Tratamento de dados tabulares
-- Boas práticas de documentação de código
+Instale os componentes adicionais:
 
-## Limitações Conhecidas
+```bash
+python -m pip install -r requirements-automation.txt
+python -m playwright install chromium
+```
 
-- Requer que o navegador esteja visível durante a execução
-- Dependente de coordenadas específicas da tela
-- Sensível a mudanças no layout do site
-- Não funciona com o computador bloqueado
+Abra dois terminais na raiz do projeto.
 
-## Melhorias Futuras
+**Terminal 1: servir o formulário local**
 
-- Implementação com Selenium para maior robustez
-- Interface gráfica para facilitar configuração
-- Sistema de log detalhado
-- Tratamento de erros mais robusto
-- Suporte para múltiplos navegadores
-- Validação de dados antes do cadastro
+```bash
+python -m http.server 8000 --directory demo
+```
 
-## Contribuições
+**Terminal 2: validar e cadastrar dez itens**
 
-Este é um projeto de aprendizado, mas sugestões e melhorias são bem-vindas. Sinta-se livre para abrir issues ou enviar pull requests.
+```bash
+python run.py --modo executar --limite 10
+```
 
-## Licença
+O navegador abre `http://127.0.0.1:8000/formulario.html`, preenche os campos e salva o resultado em `data/log_execucao.csv`.
 
-Este projeto foi desenvolvido para fins educacionais.
+Por segurança, destinos externos são bloqueados por padrão. Leia [automação segura](docs/automacao-segura.md) antes de adaptar os seletores.
+
+## Uso pela linha de comando
+
+```bash
+# Apenas validar o arquivo
+python run.py --modo validar
+
+# Produzir um log fictício, sem navegador
+python run.py --modo simular --limite 100
+
+# Executar no formulário local
+python run.py --modo executar --limite 10 --headless
+```
+
+## Testes
+
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
+```
+
+Os testes cobrem:
+
+- reprodução da base sintética;
+- detecção de erros intencionais;
+- cálculo de indicadores e tempo;
+- reprodução do log simulado;
+- bloqueio de URL externa;
+- correspondência entre seletores do robô e campos do HTML.
+
+## Estrutura do projeto
+
+```text
+.
+├── app.py                         # aplicação Streamlit
+├── run.py                         # validação, simulação e execução por CLI
+├── data/                          # bases sintéticas incluídas
+├── demo/formulario.html           # destino local da automação
+├── src/
+│   ├── analytics.py               # indicadores e agrupamentos
+│   ├── browser_bot.py             # Playwright e política de URL
+│   ├── data.py                    # geração de dados reproduzíveis
+│   ├── execution.py               # log fictício da simulação
+│   └── validation.py              # regras de qualidade
+├── tests/                         # testes automatizados
+├── scripts/                       # geração de dados e imagens
+├── assets/                        # painel e capa para divulgação
+└── docs/                          # decisões, dados e segurança
+```
+
+## Decisões técnicas
+
+- **Seletores no lugar de coordenadas:** `data-testid` é mais legível e resistente a mudanças de resolução.
+- **Duas severidades:** erro bloqueia; aviso pede análise humana.
+- **Ambiente local por padrão:** a demonstração não depende de login ou sistema de terceiros.
+- **Dados sintéticos identificados:** os números são úteis para estudo, sem aparentar ser informação empresarial real.
+- **Simulação separada da execução:** o painel publicado não afirma ter automatizado um processo produtivo.
+
+Mais detalhes estão em [decisões do projeto](docs/decisoes-do-projeto.md).
+
+## Limitações
+
+- O catálogo representa um cenário educacional e não contém dados reais de varejo.
+- As regras de margem e outlier devem ser calibradas para cada negócio.
+- A estimativa de tempo depende dos valores escolhidos pelo usuário.
+- O formulário HTML é uma prova de conceito local, não um sistema comercial.
+- Uma integração real exigiria autorização, homologação, observabilidade, controle de acesso e tratamento de limites do sistema de destino.
 
 ## Autor
 
-Projeto desenvolvido como parte do aprendizado em Python e automação.
+**Bruno Nunes**
+Cientista de Dados em formação pela Pós-Tech AI Scientist da FIAP.
 
-## Contato
+[GitHub](https://github.com/bruno-dsn) | [LinkedIn](https://www.linkedin.com/in/bruno-dsnunes/)
 
-Para dúvidas ou sugestões, abra uma issue neste repositório.
+---
+
+Se este projeto ajudou você a pensar em automação com qualidade de dados, deixe uma estrela no repositório.

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ambiente local de cadastro</title>
+  <style>
+    :root { color-scheme: dark; --bg: #07111f; --card: #0d1b2a; --line: #1e3a52; --cyan: #24c7d9; --green: #62d6a4; --text: #eef7ff; --muted: #9eb3c7; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; font-family: Inter, system-ui, sans-serif; background: radial-gradient(circle at top right, #11304a 0, var(--bg) 42%); color: var(--text); }
+    main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 48px 0 72px; }
+    .tag { color: var(--cyan); text-transform: uppercase; letter-spacing: .14em; font-size: .75rem; font-weight: 700; }
+    h1 { max-width: 700px; margin: 10px 0 12px; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.02; }
+    p { color: var(--muted); max-width: 760px; line-height: 1.6; }
+    .status { display: flex; gap: 12px; flex-wrap: wrap; margin: 26px 0; }
+    .pill { border: 1px solid var(--line); background: #0b2033; padding: 8px 12px; border-radius: 999px; color: var(--muted); }
+    .pill strong { color: var(--green); }
+    form { background: rgba(13, 27, 42, .92); border: 1px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: 0 24px 70px rgba(0,0,0,.24); }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    label { display: grid; gap: 7px; color: #c8d7e5; font-size: .9rem; }
+    input, textarea { width: 100%; background: #071522; color: var(--text); border: 1px solid #27465f; border-radius: 10px; padding: 12px 13px; font: inherit; }
+    input:focus, textarea:focus { outline: 2px solid rgba(36,199,217,.3); border-color: var(--cyan); }
+    textarea { min-height: 90px; resize: vertical; }
+    .wide { grid-column: 1 / -1; }
+    button { margin-top: 20px; border: 0; border-radius: 10px; padding: 13px 20px; color: #03141d; background: linear-gradient(90deg, var(--cyan), var(--green)); font-weight: 800; cursor: pointer; }
+    #resultado { display: none; margin-top: 18px; padding: 13px; border-radius: 10px; background: rgba(98,214,164,.1); border: 1px solid rgba(98,214,164,.4); color: var(--green); }
+    section { margin-top: 30px; }
+    table { width: 100%; border-collapse: collapse; background: rgba(13,27,42,.75); border: 1px solid var(--line); }
+    th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); }
+    th { color: var(--cyan); }
+    td { color: #c7d7e4; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="tag">ambiente local e controlado</div>
+    <h1>Formulário de demonstração para o robô</h1>
+    <p>Esta página não envia dados para a internet. Ela existe para demonstrar, com segurança, como o Playwright localiza campos por seletores estáveis e registra uma fila validada.</p>
+    <div class="status">
+      <span class="pill">Destino: <strong>navegador local</strong></span>
+      <span class="pill">Cadastros nesta sessão: <strong data-testid="contador-cadastros">0</strong></span>
+    </div>
+
+    <form id="formulario">
+      <div class="grid">
+        <label>Código<input required data-testid="codigo" name="codigo"></label>
+        <label>Produto<input required data-testid="produto" name="produto"></label>
+        <label>Categoria<input required data-testid="categoria" name="categoria"></label>
+        <label>Marca<input required data-testid="marca" name="marca"></label>
+        <label>Preço de venda<input required type="number" step="0.01" min="0.01" data-testid="preco-venda" name="preco_venda"></label>
+        <label>Custo unitário<input required type="number" step="0.01" min="0" data-testid="custo-unitario" name="custo_unitario"></label>
+        <label>Estoque<input required type="number" step="1" min="0" data-testid="estoque" name="estoque"></label>
+        <label>Fornecedor<input required data-testid="fornecedor" name="fornecedor"></label>
+        <label class="wide">Observação<textarea data-testid="observacao" name="observacao"></textarea></label>
+      </div>
+      <button type="submit" data-testid="enviar-produto">Cadastrar produto</button>
+      <div id="resultado" data-testid="resultado-cadastro" role="status"></div>
+    </form>
+
+    <section>
+      <h2>Últimos cadastros da sessão</h2>
+      <table>
+        <thead><tr><th>Código</th><th>Produto</th><th>Categoria</th><th>Preço</th></tr></thead>
+        <tbody id="registros"></tbody>
+      </table>
+    </section>
+  </main>
+  <script>
+    const formulario = document.querySelector('#formulario');
+    const resultado = document.querySelector('#resultado');
+    const contador = document.querySelector('[data-testid="contador-cadastros"]');
+    const tabela = document.querySelector('#registros');
+    const cadastros = [];
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      const dados = Object.fromEntries(new FormData(formulario));
+      cadastros.push(dados);
+      contador.textContent = cadastros.length;
+      resultado.textContent = `Cadastro realizado com sucesso: ${dados.codigo}`;
+      resultado.style.display = 'block';
+      const linha = document.createElement('tr');
+      [dados.codigo, dados.produto, dados.categoria, `R$ ${Number(dados.preco_venda).toFixed(2)}`].forEach((valor) => {
+        const celula = document.createElement('td');
+        celula.textContent = valor;
+        linha.appendChild(celula);
+      });
+      tabela.prepend(linha);
+      formulario.reset();
+    });
+  </script>
+</body>
+</html>
