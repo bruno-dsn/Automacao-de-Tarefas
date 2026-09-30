@@ -1,3 +1,5 @@
+[![Python checks](https://github.com/bruno-dsn/Automacao-de-Tarefas/actions/workflows/tests.yml/badge.svg)](https://github.com/bruno-dsn/Automacao-de-Tarefas/actions/workflows/tests.yml)
+
 <div align="center">
 
 # Central de Qualidade e Automação de Catálogo
@@ -224,10 +226,15 @@ Mais detalhes estão em [decisões do projeto](docs/decisoes-do-projeto.md).
 ## Autor
 
 **Bruno Nunes**
-Cientista de Dados e IA.
+Estudante de Inteligência Artificial e Machine Learning, com projetos de Ciência de Dados.
 
 [GitHub](https://github.com/bruno-dsn) | [LinkedIn](https://www.linkedin.com/in/bruno-dsnunes/)
 
 ---
 
 Se este projeto ajudou você a pensar em automação com qualidade de dados, deixe uma estrela no repositório.
+
+
+## Verificação automatizada
+
+O workflow [Python checks](.github/workflows/tests.yml) instala as dependências de desenvolvimento e executa a suíte de testes em Python 3.12 a cada push ou pull request. O badge acima mostra o resultado real da execução, sem um número fixo de testes.
