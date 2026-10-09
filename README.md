@@ -1,23 +1,20 @@
-[![Python checks](https://github.com/bruno-dsn/Automacao-de-Tarefas/actions/workflows/tests.yml/badge.svg)](https://github.com/bruno-dsn/Automacao-de-Tarefas/actions/workflows/tests.yml)
+# Qualidade e Automação de Catálogo
 
-<div align="center">
+![Qualidade e Automação de Catálogo](assets/portfolio-cover.svg)
 
-# Central de Qualidade e Automação de Catálogo
+Valide um catálogo antes de automatizar o preenchimento de um formulário. O projeto identifica erros, separa registros liberados e produz logs em simulação ou em um formulário local.
 
-### Validação de dados antes da execução automatizada
+[Como executar](#como-executar-o-painel) · [Dados e método](docs/automacao-segura.md) · [Testes](tests/) · [Histórico](https://github.com/bruno-dsn/Automacao-de-Tarefas/commits/main)
 
-[![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
-[![Playwright](https://img.shields.io/badge/Playwright-Automação-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)](https://playwright.dev/python/)
-[![Tests](https://img.shields.io/badge/Testes-Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
-[![Data](https://img.shields.io/badge/Dados-Sintéticos-24C7D9?style=for-the-badge)](docs/dados-e-metodologia.md)
-[![License](https://img.shields.io/badge/Licença-MIT-62D6A4?style=for-the-badge)](LICENSE)
+[![Verificações Python](https://github.com/bruno-dsn/Automacao-de-Tarefas/actions/workflows/tests.yml/badge.svg)](https://github.com/bruno-dsn/Automacao-de-Tarefas/actions/workflows/tests.yml) · [Licença MIT](LICENSE)
 
-Uma aplicação de portfólio que recebe um catálogo em CSV, aplica regras de qualidade, separa registros bloqueados e demonstra uma fila automatizada em ambiente local.
+## Veja a aplicação
 
-</div>
+![Captura real da interface revisada](assets/interface-desktop.png)
 
-![Visão do projeto](assets/painel_automacao.png)
+Captura da aplicação executada localmente com os dados de demonstração. A fonte dos dados, os filtros e as hipóteses permanecem visíveis no painel.
+
+**Primeira exploração:** Abra a amostra com erros; investigue os bloqueios; compare a fila liberada e o log da simulação.
 
 ## O problema
 

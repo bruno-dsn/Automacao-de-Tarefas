@@ -91,7 +91,43 @@ def aplicar_estilo() -> None:
         .stTabs [data-baseweb="tab-list"] { gap: 10px; }
         .stTabs [data-baseweb="tab"] { background: rgba(13,27,42,.7); border-radius: 10px; padding: 10px 18px; }
         .stTabs [aria-selected="true"] { color: #24C7D9; border: 1px solid #24C7D9; }
-        </style>
+
+/* Interface revisada: contraste, hierarquia e navegação responsiva. */
+:root { --ui-accent: #24C7D9; --ui-surface: #141E2E; --ui-ink: #F1F5FA; --ui-muted: #B0BED0; --ui-line: #2C3A4F; }
+.stApp { background: #0C1220 !important; }
+.stApp .block-container { max-width: 1400px; padding-top: 1.2rem; padding-bottom: 3.5rem; }
+[data-testid="stSidebar"] { background: #141E2E !important; border-right: 1px solid #2C3A4F !important; }
+.workspace-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; color: #B0BED0; padding: 2px 0 17px; margin-bottom: 6px; border-bottom: 1px solid #2C3A4F; font-size: .78rem; }
+.workspace-bar strong { color: #F1F5FA; font-weight: 650; }
+.workspace-source { border: 1px solid #2C3A4F; border-radius: 6px; padding: 4px 9px; background: #141E2E; color: #B0BED0; font-size: .72rem; }
+.stApp .hero { border: 1px solid #2C3A4F !important; border-left: 4px solid #24C7D9 !important; border-radius: 12px !important; padding: 24px 28px !important; background: #141E2E !important; box-shadow: none !important; margin-bottom: 20px !important; }
+.stApp .hero h1 { color: #F7FAFF; font-size: clamp(1.65rem, 2.4vw, 2.3rem) !important; line-height: 1.2 !important; letter-spacing: -.035em; max-width: 1000px; margin: 6px 0 10px !important; }
+.stApp .hero p { color: #C5D1E0 !important; font-size: .96rem !important; line-height: 1.65 !important; max-width: 940px !important; }
+.stApp .hero .eyebrow, .stApp .hero-kicker { color: #24C7D9 !important; font-size: .69rem !important; letter-spacing: .11em !important; }
+.stApp h1 { font-size: clamp(1.7rem, 2.5vw, 2.4rem); line-height: 1.2; letter-spacing: -.035em; }
+.stApp h2 { font-size: 1.4rem; letter-spacing: -.02em; }
+.stApp h3 { font-size: 1.13rem; letter-spacing: -.015em; }
+[data-testid="stMetric"] { background: #141E2E !important; border: 1px solid #2C3A4F !important; border-top: 2px solid #2C3A4F !important; border-radius: 10px !important; padding: 18px 20px !important; box-shadow: none !important; min-height: 112px; }
+[data-testid="stMetricLabel"] { color: #B0BED0 !important; font-size: .81rem !important; }
+[data-testid="stMetricValue"] { color: #F1F5FA !important; font-size: 1.75rem !important; font-weight: 700 !important; font-variant-numeric: tabular-nums; }
+[data-testid="stDataFrame"] { border: 1px solid #2C3A4F; border-radius: 10px; overflow: hidden; }
+[data-testid="stPlotlyChart"], [data-testid="stVegaLiteChart"] { border: 1px solid #2C3A4F; border-radius: 12px; padding: 10px; background: #141E2E; }
+.stTabs [data-baseweb="tab-list"] { gap: 8px !important; border-bottom: 1px solid #2C3A4F; overflow-x: auto; padding-bottom: 3px; }
+.stTabs [data-baseweb="tab"] { background: transparent !important; padding: 9px 12px !important; border-radius: 6px !important; font-size: .87rem; white-space: nowrap; }
+.stTabs [aria-selected="true"] { color: #24C7D9 !important; border: none !important; background: #141E2E !important; font-weight: 650; }
+.stButton > button, .stDownloadButton > button { border-radius: 7px; min-height: 42px; font-weight: 600; }
+.stApp button:focus-visible, .stApp input:focus-visible, .stApp textarea:focus-visible, .stApp a:focus-visible { outline: 3px solid #24C7D9; outline-offset: 3px; }
+.stApp .lesson-card, .stApp .schema-card, .stApp .clause-card, .stApp .step { box-shadow: none !important; border-radius: 10px !important; }
+@media (max-width: 900px) {
+  .stApp .block-container { padding-left: 1rem; padding-right: 1rem; }
+  .stApp .hero { padding: 20px !important; }
+  [data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
+  [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] { min-width: min(240px, 100%); flex: 1 1 240px; }
+  [data-testid="stMetricValue"] { font-size: 1.5rem !important; }
+}
+@media (prefers-reduced-motion: reduce) { .stApp *, .stApp *::before, .stApp *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+</style>
+<div class="workspace-bar"><strong>Operações · Validação e automação</strong><span class="workspace-source">Demonstração local</span></div>
         """,
         unsafe_allow_html=True,
     )
